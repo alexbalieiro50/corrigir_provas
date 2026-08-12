@@ -1,0 +1,61 @@
+.section-label-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.section-label {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.section-hint {
+  margin: 4px 0 14px;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.section-hint code {
+  background: var(--paper-dim);
+  padding: 1px 5px;
+  border-radius: 3px;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+}
+
+.parsed-badge {
+  font-size: 12px;
+  color: var(--scan-dim);
+  background: #e4f8f5;
+  border: 1px solid #bfe9e2;
+  padding: 3px 9px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.answer-key-textarea {
+  width: 100%;
+  resize: vertical;
+  background: #fdfcf9;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 14px 16px;
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--text);
+  min-height: 140px;
+  transition: border-color 0.15s ease;
+}
+
+.answer-key-textarea:focus {
+  border-color: var(--scan);
+}
+
+.answer-key-textarea:disabled {
+  opacity: 0.6;
+}

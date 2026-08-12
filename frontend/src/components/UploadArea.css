@@ -1,0 +1,91 @@
+.upload-drop {
+  border: 1.5px dashed var(--line);
+  border-radius: 8px;
+  padding: 34px 20px;
+  text-align: center;
+  cursor: pointer;
+  background: #fdfcf9;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.upload-drop:hover {
+  border-color: var(--scan-dim);
+}
+
+.upload-drop-active {
+  border-color: var(--scan);
+  background: #eefaf8;
+}
+
+.upload-drop-has-file {
+  cursor: default;
+  padding: 18px 20px;
+  text-align: left;
+}
+
+.upload-icon {
+  color: var(--scan-dim);
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.upload-title {
+  margin: 0 0 4px;
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--text);
+}
+
+.upload-subtitle {
+  margin: 0;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.upload-file-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.upload-file-icon {
+  color: var(--ok);
+  flex-shrink: 0;
+}
+
+.upload-filename {
+  margin: 0;
+  font-weight: 600;
+  font-size: 14px;
+  word-break: break-all;
+}
+
+.upload-filesize {
+  margin: 2px 0 0;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.upload-remove-btn {
+  margin-left: auto;
+  flex-shrink: 0;
+  background: none;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 12.5px;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.upload-remove-btn:hover {
+  border-color: var(--bad);
+  color: var(--bad);
+}
+
+.upload-error {
+  margin: 10px 2px 0;
+  font-size: 13px;
+  color: var(--bad);
+}
