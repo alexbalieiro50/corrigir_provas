@@ -9,7 +9,7 @@ export default function Header() {
             <span className="brand-mark-dot" />
           </span>
           <div>
-            <h1>Corretor OMR</h1>
+            <h1>Gabaritô - SEMSA</h1>
             <p className="subtitle">Correção automática de cartões-resposta</p>
           </div>
         </div>
