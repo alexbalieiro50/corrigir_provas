@@ -21,7 +21,8 @@ export default function App() {
   const [result, setResult] = useState<CorrectionResponse | null>(null);
   const [activePage, setActivePage] = useState(0);
 
-  const canSubmit = answerKey.trim().length > 0 && file !== null && status !== "loading";
+  const canSubmit =
+    answerKey.trim().length > 0 && file !== null && status !== "loading";
 
   async function handleSubmit() {
     if (!file) return;
@@ -34,11 +35,17 @@ export default function App() {
       setStatus("success");
     } catch (err) {
       setStatus("error");
-      setErrorMessage(err instanceof Error ? err.message : "Erro inesperado ao processar o cartão.");
+      setErrorMessage(
+        err instanceof Error
+          ? err.message
+          : "Erro inesperado ao processar o cartão.",
+      );
     }
   }
 
-  const currentPage: PageResult | null = result ? result.pages[activePage] : null;
+  const currentPage: PageResult | null = result
+    ? result.pages[activePage]
+    : null;
 
   return (
     <div className="app-shell">
@@ -46,15 +53,27 @@ export default function App() {
 
       <main className="app-main">
         <FiducialCard>
-          <AnswerKeyInput value={answerKey} onChange={setAnswerKey} disabled={status === "loading"} />
+          <AnswerKeyInput
+            value={answerKey}
+            onChange={setAnswerKey}
+            disabled={status === "loading"}
+          />
         </FiducialCard>
 
         <FiducialCard>
-          <UploadArea file={file} onFileSelected={setFile} disabled={status === "loading"} />
+          <UploadArea
+            file={file}
+            onFileSelected={setFile}
+            disabled={status === "loading"}
+          />
         </FiducialCard>
 
         <div className="submit-row">
-          <button className="submit-btn" onClick={handleSubmit} disabled={!canSubmit}>
+          <button
+            className="submit-btn"
+            onClick={handleSubmit}
+            disabled={!canSubmit}
+          >
             {status === "loading" ? (
               <>
                 <span className="spinner" aria-hidden="true" />
@@ -65,11 +84,15 @@ export default function App() {
             )}
           </button>
           {!canSubmit && status !== "loading" && (
-            <span className="submit-hint">Informe o gabarito e envie um cartão para habilitar a correção.</span>
+            <span className="submit-hint">
+              Informe o gabarito e envie um cartão para habilitar a correção.
+            </span>
           )}
         </div>
 
-        {status === "error" && errorMessage && <ErrorBanner message={errorMessage} />}
+        {status === "error" && errorMessage && (
+          <ErrorBanner message={errorMessage} />
+        )}
 
         {status === "success" && result && currentPage && (
           <div className="results-section">
@@ -106,7 +129,9 @@ export default function App() {
                 <h2 className="section-label" style={{ marginBottom: 14 }}>
                   Folha processada
                 </h2>
-                <ProcessedImageView base64Png={currentPage.processedImageBase64} />
+                <ProcessedImageView
+                  base64Png={currentPage.processedImageBase64}
+                />
               </FiducialCard>
             )}
           </div>
@@ -114,7 +139,8 @@ export default function App() {
       </main>
 
       <footer className="app-footer">
-        <span>Corretor OMR · MVP</span>
+        <span>R. Frei Pio, Nº 295 – Centro – Cep: 69620-00</span>
+        <span>Tel. (97) 3463-1259 – Amaturá -Am</span>
       </footer>
     </div>
   );
