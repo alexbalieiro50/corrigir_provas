@@ -1,7 +1,11 @@
 import type { ApiError, CorrectionResponse } from "../types";
 
-// Em desenvolvimento, o Vite faz proxy de /api para http://localhost:8000 (ver vite.config.ts)
-const API_BASE = "/api";
+// Se estiver em produção (Vercel), usa a URL do Render. Se estiver local, usa a rota relativa do Vite.
+const HOST = import.meta.env.PROD 
+  ? "https://corrigir-provas.onrender.com" 
+  : "";
+
+const API_BASE = `${HOST}/api`;
 
 export class ApiRequestError extends Error {
   code: string;
@@ -29,7 +33,7 @@ export async function correctSheet(
     });
   } catch (e) {
     throw new Error(
-      "Não foi possível conectar ao servidor. Verifique se o backend está em execução (http://localhost:8000)."
+      "Não foi possível conectar ao servidor. Verifique se o backend está online no Render."
     );
   }
 
