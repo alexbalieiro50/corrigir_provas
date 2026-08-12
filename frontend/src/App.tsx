@@ -139,9 +139,8 @@ export default function App() {
       </main>
 
       <footer className="app-footer">
-        <span>R. Frei Pio, Nº 295 – Centro – Cep: 69620-00</span>
-        <br />
-        <span>Tel. (97) 3463-1259 – Amaturá -Am</span>
+        <p>Desenvolvido por Alex Balieiro</p>        
+        <p>v1.0.0 (MVP)</p>
       </footer>
     </div>
   );
