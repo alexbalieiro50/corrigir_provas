@@ -9,7 +9,7 @@ export default defineConfig({
     proxy: {
       // Encaminha chamadas /api para o backend FastAPI durante o desenvolvimento
       "/api": {
-        target: "http://localhost:8000",
+        target: "https://corrigir-provas.onrender.com",
         changeOrigin: true,
       },
     },
