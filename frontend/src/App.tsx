@@ -18,13 +18,13 @@ export default function App() {
   const [answerKey, setAnswerKey] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const [templateName, setTemplateName] = useState("amatura_45");
+  const [candidateName, setCandidateName] = useState("");
   const [status, setStatus] = useState<Status>("idle");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [result, setResult] = useState<CorrectionResponse | null>(null);
   const [activePage, setActivePage] = useState(0);
 
-  const canSubmit =
-    answerKey.trim().length > 0 && file !== null && status !== "loading";
+  const canSubmit = answerKey.trim().length > 0 && file !== null && status !== "loading";
 
   async function handleSubmit() {
     if (!file) return;
@@ -37,51 +37,31 @@ export default function App() {
       setStatus("success");
     } catch (err) {
       setStatus("error");
-      setErrorMessage(
-        err instanceof Error
-          ? err.message
-          : "Erro inesperado ao processar o cartão.",
-      );
+      setErrorMessage(err instanceof Error ? err.message : "Erro inesperado ao processar o cartão.");
     }
   }
 
-  const currentPage: PageResult | null = result
-    ? result.pages[activePage]
-    : null;
+  const currentPage: PageResult | null = result ? result.pages[activePage] : null;
 
   return (
     <div className="app-shell">
       <Header />
 
       <main className="app-main">
-        <TemplateSelect
-          value={templateName}
-          onChange={setTemplateName}
-          disabled={status === "loading"}
-        />
+        <div className="no-print">
+          <TemplateSelect value={templateName} onChange={setTemplateName} disabled={status === "loading"} />
+        </div>
 
-        <FiducialCard>
-          <AnswerKeyInput
-            value={answerKey}
-            onChange={setAnswerKey}
-            disabled={status === "loading"}
-          />
+        <FiducialCard className="no-print">
+          <AnswerKeyInput value={answerKey} onChange={setAnswerKey} disabled={status === "loading"} />
         </FiducialCard>
 
-        <FiducialCard>
-          <UploadArea
-            file={file}
-            onFileSelected={setFile}
-            disabled={status === "loading"}
-          />
+        <FiducialCard className="no-print">
+          <UploadArea file={file} onFileSelected={setFile} disabled={status === "loading"} />
         </FiducialCard>
 
-        <div className="submit-row">
-          <button
-            className="submit-btn"
-            onClick={handleSubmit}
-            disabled={!canSubmit}
-          >
+        <div className="submit-row no-print">
+          <button className="submit-btn" onClick={handleSubmit} disabled={!canSubmit}>
             {status === "loading" ? (
               <>
                 <span className="spinner" aria-hidden="true" />
@@ -92,20 +72,16 @@ export default function App() {
             )}
           </button>
           {!canSubmit && status !== "loading" && (
-            <span className="submit-hint">
-              Informe o gabarito e envie um cartão para habilitar a correção.
-            </span>
+            <span className="submit-hint">Informe o gabarito e envie um cartão para habilitar a correção.</span>
           )}
         </div>
 
-        {status === "error" && errorMessage && (
-          <ErrorBanner message={errorMessage} />
-        )}
+        {status === "error" && errorMessage && <ErrorBanner message={errorMessage} />}
 
         {status === "success" && result && currentPage && (
           <div className="results-section">
             {result.pages.length > 1 && (
-              <div className="page-tabs">
+              <div className="page-tabs no-print">
                 {result.pages.map((p, i) => (
                   <button
                     key={p.page}
@@ -118,37 +94,63 @@ export default function App() {
               </div>
             )}
 
-            <FiducialCard>
-              <h2 className="section-label">03 — Resultado</h2>
-              <div className="results-body">
-                <ResultsSummary result={currentPage} />
+            <div className="print-report">
+              <div className="print-report-header">
+                <div>
+                  <h2 className="print-report-title">Resultado da correção</h2>
+                  <label className="candidate-name-field">
+                    Nome do candidato
+                    <input
+                      type="text"
+                      value={candidateName}
+                      onChange={(e) => setCandidateName(e.target.value)}
+                      placeholder="(opcional) digite o nome para exibir na impressão"
+                    />
+                  </label>
+                </div>
+                <button className="print-btn no-print" onClick={() => window.print()}>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path
+                      d="M6 9V4h12v5M6 18h12v3H6v-3zM6 14h12M4 9h16a1 1 0 011 1v5a1 1 0 01-1 1h-3M4 9a1 1 0 00-1 1v5a1 1 0 001 1h3"
+                      stroke="currentColor"
+                      strokeWidth="1.6"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                  Imprimir resultado
+                </button>
               </div>
-            </FiducialCard>
 
-            <FiducialCard>
-              <h2 className="section-label" style={{ marginBottom: 14 }}>
-                Detalhamento por questão
-              </h2>
-              <ResultsTable answers={currentPage.answers} />
-            </FiducialCard>
+              <FiducialCard>
+                <h2 className="section-label">03 — Resultado</h2>
+                <div className="results-body">
+                  <ResultsSummary result={currentPage} />
+                </div>
+              </FiducialCard>
 
-            {currentPage.processedImageBase64 && (
               <FiducialCard>
                 <h2 className="section-label" style={{ marginBottom: 14 }}>
-                  Folha processada
+                  Detalhamento por questão
                 </h2>
-                <ProcessedImageView
-                  base64Png={currentPage.processedImageBase64}
-                />
+                <ResultsTable answers={currentPage.answers} />
               </FiducialCard>
-            )}
+
+              {currentPage.processedImageBase64 && (
+                <FiducialCard className="no-print">
+                  <h2 className="section-label" style={{ marginBottom: 14 }}>
+                    Folha processada
+                  </h2>
+                  <ProcessedImageView base64Png={currentPage.processedImageBase64} />
+                </FiducialCard>
+              )}
+            </div>
           </div>
         )}
       </main>
 
-      <footer className="app-footer">
-        <p>Desenvolvido por Alex Balieiro</p>
-        <p>v1.0.0 (MVP)</p>
+      <footer className="app-footer no-print">
+        <span>Corretor OMR · MVP</span>
       </footer>
     </div>
   );

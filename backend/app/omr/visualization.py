@@ -3,8 +3,8 @@ analisadas e destacando o resultado (correta/errada/em branco/inválida)."""
 
 from typing import Dict, List
 
-import cv2
-import numpy as np
+import cv2  # type: ignore
+import numpy as np  # type: ignore[import-not-found]
 
 from .processor import QuestionReading
 from .grading import QuestionResult

@@ -1,4 +1,5 @@
 import { useRef, useState, type DragEvent } from "react";
+import CameraCapture from "./CameraCapture";
 import "./UploadArea.css";
 
 interface UploadAreaProps {
@@ -24,6 +25,7 @@ function formatSize(bytes: number): string {
 export default function UploadArea({ file, onFileSelected, disabled }: UploadAreaProps) {
   const [isDragOver, setIsDragOver] = useState(false);
   const [rejectionMessage, setRejectionMessage] = useState<string | null>(null);
+  const [showCamera, setShowCamera] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   function handleFiles(fileList: FileList | null) {
@@ -96,6 +98,26 @@ export default function UploadArea({ file, onFileSelected, disabled }: UploadAre
             </div>
             <p className="upload-title">Envie o cartão-resposta</p>
             <p className="upload-subtitle">Arraste e solte, ou clique para selecionar — JPG, JPEG, PNG ou PDF</p>
+            <button
+              type="button"
+              className="camera-trigger-btn"
+              onClick={(e) => {
+                e.stopPropagation();
+                if (!disabled) setShowCamera(true);
+              }}
+              disabled={disabled}
+            >
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path
+                  d="M4 8a2 2 0 012-2h1.5l1-1.5h7l1 1.5H18a2 2 0 012 2v9a2 2 0 01-2 2H6a2 2 0 01-2-2V8z"
+                  stroke="currentColor"
+                  strokeWidth="1.6"
+                  strokeLinejoin="round"
+                />
+                <circle cx="12" cy="13" r="3.2" stroke="currentColor" strokeWidth="1.6" />
+              </svg>
+              Usar câmera
+            </button>
           </>
         )}
 
@@ -135,6 +157,17 @@ export default function UploadArea({ file, onFileSelected, disabled }: UploadAre
       </div>
 
       {rejectionMessage && <p className="upload-error">{rejectionMessage}</p>}
+
+      {showCamera && (
+        <CameraCapture
+          onCapture={(capturedFile) => {
+            setShowCamera(false);
+            setRejectionMessage(null);
+            onFileSelected(capturedFile);
+          }}
+          onClose={() => setShowCamera(false)}
+        />
+      )}
     </section>
   );
 }
