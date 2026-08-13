@@ -150,7 +150,8 @@ export default function App() {
       </main>
 
       <footer className="app-footer no-print">
-        <span>Corretor OMR · MVP</span>
+        <p>Desenvolvido por <b>Alex Balieiro</b></p>
+        <p>v1.0.0 (MVP)</p>
       </footer>
     </div>
   );
