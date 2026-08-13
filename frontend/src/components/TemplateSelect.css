@@ -1,0 +1,26 @@
+.template-select-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.template-select-label {
+  font-size: 12.5px;
+  color: #9aa0ad;
+}
+
+.template-select {
+  background: var(--ink-soft);
+  color: var(--paper);
+  border: 1px solid #2c313f;
+  border-radius: 6px;
+  padding: 7px 10px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.template-select:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

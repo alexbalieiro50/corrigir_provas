@@ -7,6 +7,7 @@ import ResultsSummary from "./components/ResultsSummary";
 import ResultsTable from "./components/ResultsTable";
 import ProcessedImageView from "./components/ProcessedImageView";
 import ErrorBanner from "./components/ErrorBanner";
+import TemplateSelect from "./components/TemplateSelect";
 import { correctSheet } from "./services/api";
 import type { CorrectionResponse, PageResult } from "./types";
 import "./App.css";
@@ -16,6 +17,7 @@ type Status = "idle" | "loading" | "success" | "error";
 export default function App() {
   const [answerKey, setAnswerKey] = useState("");
   const [file, setFile] = useState<File | null>(null);
+  const [templateName, setTemplateName] = useState("amatura_45");
   const [status, setStatus] = useState<Status>("idle");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [result, setResult] = useState<CorrectionResponse | null>(null);
@@ -29,7 +31,7 @@ export default function App() {
     setStatus("loading");
     setErrorMessage(null);
     try {
-      const data = await correctSheet(file, answerKey);
+      const data = await correctSheet(file, answerKey, templateName);
       setResult(data);
       setActivePage(0);
       setStatus("success");
@@ -52,6 +54,12 @@ export default function App() {
       <Header />
 
       <main className="app-main">
+        <TemplateSelect
+          value={templateName}
+          onChange={setTemplateName}
+          disabled={status === "loading"}
+        />
+
         <FiducialCard>
           <AnswerKeyInput
             value={answerKey}
@@ -139,8 +147,7 @@ export default function App() {
       </main>
 
       <footer className="app-footer">
-        <p>Desenvolvido por Alex Balieiro</p>        
-        <p>v1.0.0 (MVP)</p>
+        <span>Corretor OMR · MVP</span>
       </footer>
     </div>
   );

@@ -1,9 +1,9 @@
 import type { ApiError, CorrectionResponse } from "../types";
 
 // Se estiver em produção (Vercel), usa a URL do Render. Se estiver local, usa a rota relativa do Vite.
-const HOST = import.meta.env.PROD 
-  ? "https://corrigir-provas.onrender.com" 
-  : "";
+const HOST = import.meta.env.PROD
+  ? "https://corrigir-provas.onrender.com"
+  : "http://localhost:8000";
 
 const API_BASE = `${HOST}/api`;
 
@@ -18,7 +18,7 @@ export class ApiRequestError extends Error {
 export async function correctSheet(
   file: File,
   answerKeyText: string,
-  templateName = "default_45"
+  templateName = "default_45",
 ): Promise<CorrectionResponse> {
   const formData = new FormData();
   formData.append("file", file);
@@ -33,7 +33,7 @@ export async function correctSheet(
     });
   } catch (e) {
     throw new Error(
-      "Não foi possível conectar ao servidor. Verifique se o backend está online no Render."
+      "Não foi possível conectar ao servidor. Verifique se o backend está online no Render.",
     );
   }
 
@@ -47,7 +47,12 @@ export async function correctSheet(
   if (!response.ok) {
     const err = data as ApiError;
     throw new ApiRequestError(
-      err && err.message ? err : { error: "unknown", message: "Erro desconhecido ao processar o cartão." }
+      err && err.message
+        ? err
+        : {
+            error: "unknown",
+            message: "Erro desconhecido ao processar o cartão.",
+          },
     );
   }
 
