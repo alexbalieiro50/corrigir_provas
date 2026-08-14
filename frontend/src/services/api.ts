@@ -1,7 +1,11 @@
 import type { ApiError, CorrectionResponse } from "../types";
 
-// Em desenvolvimento, o Vite faz proxy de /api para http://localhost:8000 (ver vite.config.ts)
-const API_BASE = "/api";
+// Se estiver em produção (Vercel), usa a URL do Render. Se estiver local, usa a rota relativa do Vite.
+const HOST = import.meta.env.PROD
+  ? "https://corrigir-provas.onrender.com"
+  : "http://localhost:8000";
+
+const API_BASE = `${HOST}/api`;
 
 export class ApiRequestError extends Error {
   code: string;
@@ -14,7 +18,7 @@ export class ApiRequestError extends Error {
 export async function correctSheet(
   file: File,
   answerKeyText: string,
-  templateName = "default_40"
+  templateName = "default_40",
 ): Promise<CorrectionResponse> {
   const formData = new FormData();
   formData.append("file", file);
@@ -29,7 +33,7 @@ export async function correctSheet(
     });
   } catch (e) {
     throw new Error(
-      "Não foi possível conectar ao servidor. Verifique se o backend está em execução (http://localhost:8000)."
+      "Não foi possível conectar ao servidor. Verifique se o backend está em execução (http://localhost:8000).",
     );
   }
 
@@ -43,7 +47,12 @@ export async function correctSheet(
   if (!response.ok) {
     const err = data as ApiError;
     throw new ApiRequestError(
-      err && err.message ? err : { error: "unknown", message: "Erro desconhecido ao processar o cartão." }
+      err && err.message
+        ? err
+        : {
+            error: "unknown",
+            message: "Erro desconhecido ao processar o cartão.",
+          },
     );
   }
 
