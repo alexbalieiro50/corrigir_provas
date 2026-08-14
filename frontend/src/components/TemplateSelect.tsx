@@ -1,14 +1,18 @@
 import "./TemplateSelect.css";
 
-interface TemplateOption {
+export interface TemplateOption {
   value: string;
   label: string;
 }
 
-const TEMPLATE_OPTIONS: TemplateOption[] = [
+export const TEMPLATE_OPTIONS: TemplateOption[] = [
   { value: "amatura_45", label: "Amaturá — 45 questões (A–D)" },
   { value: "default_40", label: "Padrão MVP — 40 questões (A–E)" },
 ];
+
+export function getTemplateLabel(value: string): string {
+  return TEMPLATE_OPTIONS.find((opt) => opt.value === value)?.label ?? value;
+}
 
 interface TemplateSelectProps {
   value: string;
@@ -16,11 +20,7 @@ interface TemplateSelectProps {
   disabled?: boolean;
 }
 
-export default function TemplateSelect({
-  value,
-  onChange,
-  disabled,
-}: TemplateSelectProps) {
+export default function TemplateSelect({ value, onChange, disabled }: TemplateSelectProps) {
   return (
     <div className="template-select-row">
       <label htmlFor="template-select" className="template-select-label">
